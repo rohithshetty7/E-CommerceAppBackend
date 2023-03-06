@@ -41,7 +41,7 @@ function App() {
   return (
       <countContext.Provider value={{countState:count,countDispatch:dispatch}}>
     <div className="App">
-      Count-{count}
+      {/* Count-{count} */}
       {/* <userContext.Provider value={"Rohith "} >
         <channelContext.Provider value={"Atma"}>
 
@@ -49,9 +49,10 @@ function App() {
         </channelContext.Provider>
       </userContext.Provider> */}
       {/* <UseReducer3/> */}
-        <ComponentA />
+        {/* <ComponentA />
         <ComponentB />
-        <ComponentC />
+        <ComponentC /> */}
+        <UseReducer2/>
     </div>
       </countContext.Provider>
   );

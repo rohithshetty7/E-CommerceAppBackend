@@ -1,56 +1,51 @@
 import React, { useReducer } from "react";
-const initialState = {
-  firstCounter: 0,
-  secondCounter: 10,
+const initialValue = {
+  firstValue: 1,
+  secondValue: 10,
 };
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "increment":
-      return { ...state, firstCounter: state.firstCounter + action.value };
+      return { ...state, firstValue: state.firstValue + action.value };
     case "decrement":
-      return { ...state, firstCounter: state.firstCounter - action.value };
+      return { ...state, firstValue: state.firstValue - action.value };
     case "increment2":
-      return { ...state, secondCounter: state.secondCounter + action.value };
+      return { ...state, secondValue: state.secondValue + action.value };
     case "decrement2":
-      return { ...state, secondCounter: state.secondCounter - action.value };
+      return { ...state, secondValue: state.secondValue - action.value };
     case "reset":
-      return initialState;
+      return initialValue;
     default:
       return state;
   }
 };
 function UseReducer2() {
-  const [count, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialValue);
   return (
     <div>
-      <div>
-        First Count-{count.firstCounter}
-        Second Count-{count.secondCounter}
-      </div>
+      <div>First Count-{state.firstValue}</div>
+      <div>Second Count-{state.secondValue}</div>
 
-      <button onClick={() => dispatch({ type: "increment", value: 1 })}>
-        Increment
-      </button>
-      <button onClick={() => dispatch({ type: "decrement", value: 1 })}>
-        Decrement
-      </button>
-      {/* <button onClick={() => dispatch({ type: "reset" })}>Reset</button> */}
-      <button onClick={() => dispatch({ type: "increment", value: 5 })}>
-        Increment-5
-      </button>
-      <button onClick={() => dispatch({ type: "decrement", value: 5 })}>
-        Decrement -5
-      </button>
       <div>
-      <button onClick={() => dispatch({ type: "increment2", value: 1 })}>
-        Increment counter 2
-      </button>
-      <button onClick={() => dispatch({ type: "decrement2", value: 1 })}>
-        Decrement  counter 2
-      </button>
-      <button onClick={() => dispatch({ type: "reset" })}>Reset-5</button>
-
+        <button onClick={() => dispatch({ type: "increment", value: 1 })}>
+          Increment
+        </button>
+        <button onClick={() => dispatch({ type: "decrement", value: 1 })}>
+          Decrement
+        </button>
+        <button onClick={() => dispatch({ type: "increment", value: 5 })}>
+          Increment-5
+        </button>
+        <button onClick={() => dispatch({ type: "decrement", value: 5 })}>
+          Decrement-5
+        </button>
+        <button onClick={() => dispatch({ type: "increment2", value: 1 })}>
+          Increment count-2
+        </button>
+        <button onClick={() => dispatch({ type: "decrement2", value: 1 })}>
+          Decrement Count-2
+        </button>
+        <button onClick={() => dispatch({ type: "reset" })}>Reset</button>
       </div>
     </div>
   );
