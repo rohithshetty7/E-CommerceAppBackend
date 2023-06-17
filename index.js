@@ -2,6 +2,10 @@ const express = require("express");
 const dbConnect = require("./config/dbConnect");
 const authRouter = require("./routes/authRoute");
 const productRouter = require("./routes/productRoute");
+const blogRouter = require("./routes/blogRouter");
+const categoryRouter = require("./routes/Productcategory");
+
+
 const morgan=require("morgan")
 const bodyParser = require("body-parser");
 const app = express();
@@ -21,6 +25,12 @@ dbConnect();
 app.use("/api/user", authRouter);
 //Prodct 
 app.use("/api/product", productRouter);
+//Blog
+app.use("/api/blog", blogRouter);
+
+//Category
+app.use("/api/category", categoryRouter);
+
 
 
 app.listen(3001, () => {
