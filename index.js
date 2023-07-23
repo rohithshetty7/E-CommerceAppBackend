@@ -1,3 +1,6 @@
+//nodemon run start
+//npm run server
+//npm run start
 const express = require("express");
 const dbConnect = require("./config/dbConnect");
 const authRouter = require("./routes/authRoute");
@@ -6,6 +9,7 @@ const blogRouter = require("./routes/blogRouter");
 const categoryRouter = require("./routes/Productcategory");
 const blogCategoryRouter = require("./routes/blogCatRoute");
 const brandRouter = require("./routes/brandRoute");
+const couponRouter = require("./routes/coupon");
 
 
 const morgan=require("morgan")
@@ -29,15 +33,14 @@ app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);
 //Blog
 app.use("/api/blog", blogRouter);
-
 //Category
 app.use("/api/category", categoryRouter);
 //Caterggey blog categerry
 app.use("/api/blogcategory", blogCategoryRouter);
 //Brand
 app.use("/api/brand", brandRouter);
-
-
+//Coupon
+app.use("/api/coupon", couponRouter);
 
 app.listen(3001, () => {
   console.log(`Server is running  at PORT ${3001}`);

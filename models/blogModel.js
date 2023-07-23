@@ -27,6 +27,7 @@ var blogSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    images: [],
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -39,18 +40,14 @@ var blogSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    images: {
-      type: String,
-      default:
-        "https://www.shutterstock.com/image-photo/bloggingblog-concepts-ideas-white-worktable-260nw-1029506242.jpg",
-    },
+    
     author: { type: String, default: "Admin" },
   },
   {
     toJSON: {
       virtuals: true,
     },
-    toObject: { virtuals: true },timestamps:true
+    toObject: { virtuals: true }, timestamps: true
   }
 );
 

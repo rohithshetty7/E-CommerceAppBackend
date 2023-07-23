@@ -3,7 +3,7 @@
 const mongoose = require("mongoose"); // Erase if already required
 const bcrypt = require("bcrypt");
 const { timeStamp } = require("console");
-const crypto=require("crypto")
+const crypto = require("crypto")
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema(
   {
@@ -42,7 +42,7 @@ var userSchema = new mongoose.Schema(
       default: [],
     },
     refreshToken: { type: String },
-    address: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
+    address: { type: String },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     referenceToken: { type: String },
     passwordChangedAt: Date,

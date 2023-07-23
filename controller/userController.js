@@ -65,6 +65,45 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+
+const loginAdmin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  console.log("R", email, password);
+  const findAdmin = await User.findOne({ email });
+  console.log("findAdmin", findAdmin);
+  console.log("RNS", findAdmin && (await findAdmin.isPasswordMatched(password)));
+  if (findAdmin.role !== "admin") throw new Error("Not Authorised")
+  if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
+    const refreshToken = await generateRefreshToken(findAdmin?._id);
+    console.log("refreshToken1", refreshToken);
+    const updatedUser = await User.findByIdAndUpdate(
+      findAdmin._id,
+      {
+        refreshToken: refreshToken,
+      },
+      { new: true }
+    );
+    console.log("updatedUser", updatedUser);
+    // res.cookie()
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 72 * 60 * 60 * 1000,
+    });
+    res.json({
+      _id: findAdmin?._id,
+      firstname: findAdmin.firstname,
+      lastname: findAdmin.lastname,
+      email: findAdmin.email,
+      mobile: findAdmin.mobile,
+      token: generateToken(findAdmin?._id),
+    });
+  } else {
+    throw new Error("Invalid credetials");
+  }
+});
+
+
+
 // const logout = asyncHandler(async (req, res) => {
 //   const cookie = req.cookies;
 //   if (!cookie.refreshToken) throw new Error("No refrsh token in cookies");
@@ -165,7 +204,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
   });
 
   try {
-  } catch (error) {}
+  } catch (error) { }
 });
 const updateUser = asyncHandler(async (req, res) => {
   try {
@@ -193,6 +232,21 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+//save user Address
+
+const saveAddress = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+  validateMongoDbId(id)
+  try {
+    const updateUser = await User.findByIdAndUpdate(id, {
+      address: req.body.address,     
+
+    }, { new: true })
+    res.json(updateUser)
+  } catch (error) {
+    throw new Error(error);
+  }
+})
 const blockUser = asyncHandler(async (req, res) => {
   try {
     let { id } = req.params;
@@ -271,8 +325,8 @@ const forGotPasswordToken = asyncHandler(async (req, res) => {
     await userEmail.save();
     const resetUrl = `Hi Please follow this link to reset
      your password.This link valid till 10 min from here <a href="http://localhost:3001/api/user/forgot-password-token/${token}">Click here</a>`;
-    console.log("resetUrl",resetUrl);
-     const data = {
+    console.log("resetUrl", resetUrl);
+    const data = {
       to: email,
       text: "Hey User",
       subject: "Forgot Passwor link",
@@ -298,12 +352,25 @@ const resetPassword = asyncHandler(async (req, res) => {
   });
   if (!user) throw new Error("Token Expired Please try again later ");
   user.password = password;
-  user.passwordResetToken=undefined;
-  user.passwordResetExpires=undefined;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
   await user.save()
   res.json(user)
 
 });
+
+const getWishList = asyncHandler(async (req, res) => {
+  const { id } = req.user;
+  try {
+    const findUser = await User.findById(id).populate("wishlist")
+    res.json(findUser)
+
+  } catch (error) {
+    throw new Error(error)
+  }
+})
+
+
 module.exports = {
   createUser,
   loginUser,
@@ -318,4 +385,7 @@ module.exports = {
   updatePassword,
   forGotPasswordToken,
   resetPassword,
+  loginAdmin,
+  getWishList,
+  saveAddress
 };
