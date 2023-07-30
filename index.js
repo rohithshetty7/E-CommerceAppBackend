@@ -10,6 +10,9 @@ const categoryRouter = require("./routes/Productcategory");
 const blogCategoryRouter = require("./routes/blogCatRoute");
 const brandRouter = require("./routes/brandRoute");
 const couponRouter = require("./routes/coupon");
+const colorRouter = require("./routes/colorRoute");
+const enquiryRouter = require("./routes/enquiry");
+
 
 
 const morgan=require("morgan")
@@ -41,6 +44,10 @@ app.use("/api/blogcategory", blogCategoryRouter);
 app.use("/api/brand", brandRouter);
 //Coupon
 app.use("/api/coupon", couponRouter);
+//brand
+app.use("/api/color", colorRouter);
+app.use("/api/enquiry", enquiryRouter);
+
 
 app.listen(3001, () => {
   console.log(`Server is running  at PORT ${3001}`);
