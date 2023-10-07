@@ -258,9 +258,6 @@ const blockUser = asyncHandler(async (req, res) => {
       { isBlocked: true },
       { new: true }
     );
-    // res.json({
-    //   message: "User Blocked",
-    // });
     res.json({
       message: "User Blocked",
       block,
@@ -278,11 +275,9 @@ const unBlockUser = asyncHandler(async (req, res) => {
       { isBlocked: false },
       { new: true }
     );
-    // res.json({
-    //   message:"User un blocked"
-    // })
+
     res.json({
-      message:"User un blocked",
+      message: "User un blocked",
       unBlock,
     });
   } catch (error) {
