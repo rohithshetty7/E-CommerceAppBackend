@@ -203,6 +203,8 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
   try {
   } catch (error) { }
 });
+
+//here updating req.user means t.e token of login user  
 const updateUser = asyncHandler(async (req, res) => {
     try {
     // console.log("R",req.user);
