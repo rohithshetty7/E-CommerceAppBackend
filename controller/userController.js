@@ -157,7 +157,7 @@ const getUsers = asyncHandler(async (req, res) => {
 
 const getSingleUser = asyncHandler(async (req, res) => {
   let { id } = req.params;
-console.log("getSingleUser", id);
+  console.log("getSingleUser", id);
   validateMongoDbId(id);
   try {
     const getSingleUser = await User.findById(id);
@@ -206,12 +206,12 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
 //here updating req.user means t.e token of login user  
 const updateUser = asyncHandler(async (req, res) => {
-    try {
+  try {
     // console.log("R",req.user);
     // let { id } = req.params;
     let { _id } = req.user;
     validateMongoDbId(_id);
-// console.log("_id", id);
+    // console.log("_id", id);
     // console.log(id);
     const updateSingleUser = await User.findByIdAndUpdate(
       _id,
@@ -246,9 +246,11 @@ const saveAddress = asyncHandler(async (req, res, next) => {
     throw new Error(error);
   }
 })
+
+//only can admin can block andunblock
 const blockUser = asyncHandler(async (req, res) => {
   try {
-    let { id } = req.params;
+    let { id } = req.params; //id
     validateMongoDbId(id);
     // console.log("blockUser id",id);
     const block = await User.findByIdAndUpdate(
@@ -260,6 +262,7 @@ const blockUser = asyncHandler(async (req, res) => {
     //   message: "User Blocked",
     // });
     res.json({
+      message: "User Blocked",
       block,
     });
   } catch (error) {
@@ -279,6 +282,7 @@ const unBlockUser = asyncHandler(async (req, res) => {
     //   message:"User un blocked"
     // })
     res.json({
+      message:"User un blocked",
       unBlock,
     });
   } catch (error) {
