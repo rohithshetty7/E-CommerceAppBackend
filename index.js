@@ -15,13 +15,14 @@ const enquiryRouter = require("./routes/enquiry");
 
 
 
-const morgan=require("morgan")
+const morgan = require("morgan")
 const bodyParser = require("body-parser");
 const app = express();
 const dotenv = require("dotenv").config();
 const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 const cookieParser = require("cookie-parser");
+const { errorHandler, notFound } = require("./middlewares/errorHandler");
 app.use(morgan("dev"))//gives you tokens like the client's user agent, the requested url, and the response time, among other things.
 app.use(cors());
 app.use(bodyParser.json());
@@ -47,8 +48,8 @@ app.use("/api/coupon", couponRouter);
 //brand
 app.use("/api/color", colorRouter);
 app.use("/api/enquiry", enquiryRouter);
-
-
+app.use(notFound)
+app.use(errorHandler)
 app.listen(3001, () => {
   console.log(`Server is running  at PORT ${3001}`);
 });

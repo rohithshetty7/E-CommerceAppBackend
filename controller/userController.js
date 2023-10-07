@@ -16,30 +16,20 @@ const uniqid = require("uniqid");
 // Create a User ----------------------------------------------
 
 const createUser = asyncHandler(async (req, res) => {
-  console.log("ytr");
   const email = req?.body?.email;
-  console.log(email);
   const findUSer = await User.findOne({ email: email });
-  console.log(findUSer);
 
   if (!findUSer) {
     //create new User
     const newUSer = await User.create(req.body);
     res.json(newUSer);
   } else {
-    //User already exist
-    // res.json({
-    // message:"USer already exist",
-    // success:false,
-
-    // })
     throw new Error("USer already exist");
   }
 });
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  // console.log(email, password);
   const findUser = await User.findOne({ email });
   console.log("findUser._id", findUser._id);
   console.log("RNS", findUser && (await findUser.isPasswordMatched(password)));
