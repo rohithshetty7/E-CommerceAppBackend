@@ -27,15 +27,13 @@ const createUser = asyncHandler(async (req, res) => {
     throw new Error("USer already exist");
   }
 });
-
+//Each time login creating refresh token and updating in DB with validity of 3 days
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const findUser = await User.findOne({ email });
-  console.log("findUser._id", findUser._id);
-  console.log("RNS", findUser && (await findUser.isPasswordMatched(password)));
+
   if (findUser && (await findUser.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findUser?._id);
-    console.log("refreshToken1", refreshToken);
     const updatedUser = await User.findByIdAndUpdate(
       findUser._id,
       {
@@ -43,8 +41,6 @@ const loginUser = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    console.log("updatedUser", updatedUser);
-    // res.cookie()
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 72 * 60 * 60 * 1000,
@@ -101,26 +97,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
 
 
 
-// const logout = asyncHandler(async (req, res) => {
-//   const cookie = req.cookies;
-//   if (!cookie.refreshToken) throw new Error("No refrsh token in cookies");
-//   const refreshToken = cookie.refreshToken;
-//   const user = await User.findOne({ refreshToken });
-//   if (!user) {
-//     res.clearCookie("refreshToken",{
-//       httpOnly:true,
-//       secure:true
-//     });
-//     return res.sendStatus(204) //forbidden
-//   }
-//    await User.findOneAndUpdate(refreshToken,{refreshToken:""})
-//    res.clearCookie("refreshToken",{
-//     httpOnly:true,
-//     secure:true
-//   });
-//    res.sendStatus(204) //forbidden
 
-// });
 const logout = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
   if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
@@ -181,6 +158,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+//refreshToken 
 const handleRefreshToken = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
   console.log("cookie", cookie.refreshToken);
