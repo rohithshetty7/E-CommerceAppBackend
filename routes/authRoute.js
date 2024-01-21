@@ -31,14 +31,14 @@ router.post("/forgot-password-token", forGotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
 
 router.get("/all-users", getUsers);
-router.get("/get-orders", authMiddleWare, getOrders);
 router.get("/refresh", handleRefreshToken);
+router.get("/get-orders", authMiddleWare, getOrders);
 router.get("/logout", logout);
 router.get("/wishlist", authMiddleWare, getWishList);
 router.get("/cart", authMiddleWare, getUserCart);
 router.post("/cart", authMiddleWare, userCart);
 router.get("/:id", authMiddleWare, isAdmin, getSingleUser);
-router.delete("/delete", authMiddleWare, emptyCart);
+router.delete("/empty-cart", authMiddleWare, emptyCart);
 router.put(
   "/order/update-order/:id",
   authMiddleWare,
@@ -51,7 +51,7 @@ router.post("/cart/cash-order", authMiddleWare, createOrder);
 
 router.delete("/:id", deleteUser);
 // router.put("/:id", updateUser);
-router.put("/edit-user", authMiddleWare, updateUser);
+router.put("/edit-user", authMiddleWare, isAdmin,updateUser);
 router.put("/block-user/:id", authMiddleWare, isAdmin, blockUser);
 router.put("/unblock-user/:id", authMiddleWare, isAdmin, unBlockUser);
 

@@ -61,9 +61,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log("R", email, password);
+console.log("R", email, password);
   const findAdmin = await User.findOne({ email });
-  console.log("findAdmin", findAdmin);
+console.log("findAdmin", findAdmin);
   console.log("RNS", findAdmin && (await findAdmin.isPasswordMatched(password)));
   if (findAdmin.role !== "admin") throw new Error("Not Authorised")
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
@@ -299,8 +299,8 @@ const forGotPasswordToken = asyncHandler(async (req, res) => {
   try {
     const token = await userEmail.createPasswordResetToken();
     await userEmail.save();
-    const resetUrl = `Hi Please follow this link to reset
-     your password.This link valid till 10 min from here <a href="http://localhost:3001/api/user/forgot-password-token/${token}">Click here</a>`;
+    const resetUrl = `Hi, please follow this link to reset your password. This link is valid for 10 minutes: <a href="http://localhost:3001/api/user/forgot-password-token/${token}">Click here</a>`;
+
     console.log("resetUrl", resetUrl);
     const data = {
       to: email,
@@ -311,6 +311,8 @@ const forGotPasswordToken = asyncHandler(async (req, res) => {
     sendMail(data);
     res.json(token);
   } catch (error) {
+    console.error("Error in forgot password token generation:", error);
+    res.status(500).json({ error: "Internal Server Error" });
     throw new Error(error);
   }
 });
@@ -417,11 +419,12 @@ const applyCoupon = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   const validCoupon = await Coupon.findOne({ name: coupon });
-  console.log("validCoupon", validCoupon);
+  console.log("validCoupon", _id);
   if (validCoupon === null) {
     throw new Error("Invalid Coupon");
   }
   const user = await User.findOne({ _id });
+  console.log(user)
   let { cartTotal } = await Cart.findOne({
     orderBy: user._id,
   }).populate("products.product");
