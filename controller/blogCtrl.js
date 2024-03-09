@@ -45,7 +45,7 @@ const getAllBlogs = asyncHandler(async (req, res) => {
   // const { id } = req.params;
   try {
     const getAllBlogs = await Blog.find();
-    res.json({ getAllBlogs });
+    res.json( getAllBlogs);
   } catch (error) {
     throw new Error(error);
   }
